@@ -1,5 +1,5 @@
 // src/components/Form.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import PainSlider from './PainSlider';
@@ -9,7 +9,6 @@ import IconSelector from './IconSelector';
 import PainCharacterSelector from './PainCharacterSelector';
 
 function Form({ onSave, onClose, initialData }) {
-  // Если есть начальные данные (режим редактирования), устанавливаем их
   const [date, setDate] = useState(initialData ? new Date(initialData.date) : new Date());
   const [painLevel, setPainLevel] = useState(initialData ? initialData.painLevel : 5);
   const [side, setSide] = useState(initialData ? initialData.side : 'Лево');

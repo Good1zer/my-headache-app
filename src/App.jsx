@@ -3,16 +3,17 @@ import React, { useState, useEffect } from 'react';
 import Dashboard from './components/Dashboard';
 import Modal from './components/Modal';
 import Form from './components/Form';
-import Notification from './components/Notification';
+import NarrativeAlert from './components/NarrativeAlert'; // обновлённый нотификатор
+import ConfirmModal from './components/ConfirmModal';
 import './App.css';
 
 function App() {
   const [records, setRecords] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [notification, setNotification] = useState(null);
+  const [narrative, setNarrative] = useState(null);
   const [editingRecord, setEditingRecord] = useState(null);
+  const [recordToDelete, setRecordToDelete] = useState(null);
 
-  // Загружаем записи из localStorage при старте
   useEffect(() => {
     const stored = localStorage.getItem('headacheRecords');
     if (stored) setRecords(JSON.parse(stored));
@@ -26,7 +27,7 @@ function App() {
   const handleAddRecord = (record) => {
     const newRecords = [record, ...records];
     saveRecords(newRecords);
-    setNotification('Запись успешно сохранена!');
+    setNarrative('Запись успешно сохранена!');
     setShowModal(false);
     setEditingRecord(null);
   };
@@ -36,19 +37,18 @@ function App() {
       rec.date === editingRecord.date ? updatedRecord : rec
     );
     saveRecords(newRecords);
-    setNotification('Запись успешно обновлена!');
+    setNarrative('Запись успешно обновлена!');
     setShowModal(false);
     setEditingRecord(null);
   };
 
-  const handleDeleteRecord = (recordToDelete) => {
-    if (window.confirm('Удалить запись?')) {
-      const newRecords = records.filter(
-        (rec) => rec.date !== recordToDelete.date
-      );
-      saveRecords(newRecords);
-      setNotification('Запись удалена!');
-    }
+  const confirmDeleteRecord = () => {
+    const newRecords = records.filter(
+      (rec) => rec.date !== recordToDelete.date
+    );
+    saveRecords(newRecords);
+    setNarrative('Запись удалена!');
+    setRecordToDelete(null);
   };
 
   const openAddModal = () => {
@@ -63,11 +63,15 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+      {narrative && (
+        <NarrativeAlert message={narrative} onClose={() => setNarrative(null)} />
+      )}
+
       <Dashboard
         records={records}
         onAddClick={openAddModal}
         onEdit={openEditModal}
-        onDelete={handleDeleteRecord}
+        onDelete={(record) => setRecordToDelete(record)}
       />
 
       {showModal && (
@@ -83,8 +87,12 @@ function App() {
         </Modal>
       )}
 
-      {notification && (
-        <Notification message={notification} onClose={() => setNotification(null)} />
+      {recordToDelete && (
+        <ConfirmModal
+          message="Вы действительно хотите удалить эту запись?"
+          onConfirm={confirmDeleteRecord}
+          onCancel={() => setRecordToDelete(null)}
+        />
       )}
     </div>
   );
