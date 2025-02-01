@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Global Variables */
+:root {
+  --font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --primary-color: #1a1a1a;
+  --secondary-color: #242424;
+  --accent-color: #646cff;
+  --accent-hover: #535bf2;
+}
+
+/* Глобальные стили */
+body {
+  @apply m-0 min-w-[320px] min-h-screen bg-gray-50 text-gray-800;
+  font-family: var(--font-family);
+}
+
+/* Ссылки */
+a {
+  @apply font-medium text-blue-600 no-underline;
+}
+a:hover {
+  @apply text-blue-700;
+}
+
+/* Заголовки */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold;
+}
+
+/* Кнопки */
+button {
+  @apply rounded-lg border border-transparent py-2 px-4 text-base font-medium cursor-pointer transition-colors;
+  background-color: var(--primary-color);
+  color: #fff;
+}
+button:hover {
+  @apply bg-blue-600;
+  border-color: var(--accent-color);
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Анимации */
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.animate-modalIn {
+  animation: modalIn 0.3s ease-out;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.animate-fadeInOut {
+  animation: fadeInOut 3s ease-out forwards;
+}
+
+/* Тёмная тема */
+@media (prefers-color-scheme: dark) {
+  body {
+    @apply bg-gray-900 text-gray-100;
+  }
+  a:hover {
+    @apply text-blue-400;
+  }
+  button {
+    background-color: var(--secondary-color);
+  }
+}
+
+/* Контейнер для выравнивания */
+.container {
+  @apply mx-auto px-4;
+}
+
+/* Responsive настройки */
+@media (max-width: 768px) {
+  body {
+    @apply p-4;
+  }
+  .container {
+    @apply px-2;
+  }
+}
